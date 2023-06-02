@@ -137,49 +137,47 @@ const verifyotp = async (req, res) => {
 };
 
 const login = (req, res, next) => {
-  const username = req.body.username;
+  const email = req.body.email;
   const password = req.body.password;
+  console.log(email);
+  User.findOne({ $or: [{ email: email }] }).then((user) => {
+    if (user) {
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (err) {
+          res.json({
+            error: err,
+          });
+        }
+        if (result) {
+          const token = jwt.sign({ name: user.name }, "secretValue", {
+            expiresIn: "2h",
+          });
 
-  User.findOne({ $or: [{ email: username }, { phone: username }] }).then(
-    (user) => {
-      if (user) {
-        bcrypt.compare(password, user.password, function (err, result) {
-          if (err) {
-            res.json({
-              error: err,
-            });
-          }
-          if (result) {
-            const token = jwt.sign({ name: user.name }, "secretValue", {
+          const refreshtoken = jwt.sign(
+            { name: user.name },
+            "secretrefreshValue",
+            {
               expiresIn: "2h",
-            });
-
-            const refreshtoken = jwt.sign(
-              { name: user.name },
-              "secretrefreshValue",
-              {
-                expiresIn: "2h",
-              }
-            );
-            res.json({
-              mesage: "login Successful",
-              token,
-              refreshtoken,
-              userId: user.id,
-            });
-          } else {
-            res.json({
-              message: "Password does not matched!",
-            });
-          }
-        });
-      } else {
-        res.json({
-          message: "no User Found",
-        });
-      }
+            }
+          );
+          res.json({
+            token,
+            refreshtoken,
+            userId: user.id,
+            userDetails: user,
+          });
+        } else {
+          res.json({
+            message: "Password does not matched!",
+          });
+        }
+      });
+    } else {
+      res.json({
+        message: "no User Found",
+      });
     }
-  );
+  });
 };
 
 const updateuser = (req, res, next) => {

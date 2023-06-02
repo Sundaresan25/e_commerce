@@ -7,7 +7,6 @@ dotenv.config();
 const EmployeeRoute = require("./routes/employee");
 const AuthRoute = require("./routes/auth");
 const ProductRoute = require("./routes/product");
-// const functions = require("firebase-functions");
 
 const uri =
   "mongodb+srv://Sundar:Sundar123@cluster0.f9qmyrj.mongodb.net/?retryWrites=true&w=majority";
@@ -41,5 +40,3 @@ app.listen(PORT, () => {
 app.use("/api/employee", EmployeeRoute);
 app.use("/api", AuthRoute);
 app.use("/api", ProductRoute);
-
-// exports.api = functions.https.onRequest(app);

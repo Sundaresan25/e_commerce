@@ -3,16 +3,16 @@ const express = require("express");
 const router = express.Router();
 
 const ProductController = require("../controllers/ProductController");
-// const authenticate = require('../middleware/authenticate');
+const authenticate = require("../middleware/authenticate");
 
-router.post("/category/:id", ProductController.addCategory);
-router.put("/category/:id", ProductController.updateCategory);
-router.get("/category", ProductController.getCategories);
-router.delete("/category", ProductController.deleteCategory);
+router.post("/category/:id", authenticate, ProductController.addCategory);
+router.put("/category/:id", authenticate, ProductController.updateCategory);
+router.get("/category", authenticate, ProductController.getCategories);
+router.delete("/category", authenticate, ProductController.deleteCategory);
 
-router.post("/product/:id", ProductController.addProducts);
-router.put("/product/:id", ProductController.updateCategory);
-router.get("/product", ProductController.getProducts);
-router.delete("/product", ProductController.deleteProducts);
+router.post("/product/:id", authenticate, ProductController.addProducts);
+router.put("/product/:id", authenticate, ProductController.updateCategory);
+router.get("/product", authenticate, ProductController.getProducts);
+router.delete("/product", authenticate, ProductController.deleteProducts);
 
 module.exports = router;
