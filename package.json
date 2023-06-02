@@ -4,9 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "src/server.js",
-    "build": "your-build-command",
-    "test": "your-test-command"
+    "start": "src/server.js"
   },
   "author": "sundar",
   "license": "ISC",
